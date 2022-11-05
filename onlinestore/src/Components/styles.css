@@ -43,9 +43,8 @@
 .product .price {
   font-weight: 500;
 }
-.add_to_cart{
-    background: rgb(209, 87, 1);
-   
+.add_to_cart {
+  background: rgb(209, 87, 1);
 }
 .add_to_cart button {
   outline: none;
@@ -56,14 +55,14 @@
   color: aliceblue;
   cursor: pointer;
 }
-.addIcons{
-    display: flex;
-    align-items: center;
-    font-size: 1.2rem;
-    justify-content: space-around;
+.addIcons {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  justify-content: space-around;
 }
-.addIcons button{
-    font-size: 1.5rem;
+.addIcons button {
+  font-size: 1.5rem;
 }
 
 .header {
@@ -109,50 +108,68 @@
 .categoriesWrapper {
   position: relative;
 }
-.categoriesWrapper:hover .categories{
-    display: flex;
+.categoriesWrapper:hover .categories {
+  display: flex;
 }
 .categories {
   position: absolute;
   top: 30;
   display: none;
   flex-direction: column;
-  
+
   width: 150%;
   text-transform: capitalize;
   font-size: 1.2rem;
   background-color: rgb(243, 245, 249);
   padding: 35px 5px;
 }
-.categories span{
-    padding: 15px 5px;
+.categories span {
+  padding: 15px 5px;
 }
-.categories span:hover{
-    background-color: rgb(237, 232, 232);
+.categories span:hover {
+  background-color: rgb(237, 232, 232);
+}
+.cart {
+  position: relative;
+}
+.cart_items {
+  background-color: rgb(209, 87, 1);
+  padding: 0 1px;
+  border-radius: 1000px;
+  color: aliceblue;
+  position: absolute;
+  top: -8px;
+  right: 0.2px;
+}
 
+.product_details_portal {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(15, 15, 15, 0.8);
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
-.cart{
-    position: relative;
+.inner_product_wrapper {
+  background-color: rgb(243, 245, 249);
+  width: 500px;
+  position: relative;
 }
-.cart_items{
-    background-color: rgb(209, 87, 1);
-    padding: 0 1px;
-    border-radius: 1000px;
-    color: aliceblue;
+.close_portal_icon{
     position: absolute;
-    top: -8px;
-    right: .2px;
-}
-
-.product_details_portal{
-    height: 100%;
-    width: 100%;
-    background-color: rgba(15, 15, 15, 0.8);
-    position: absolute;
+    right: 0;
     top: 0;
+    padding: 10px;
+    cursor: pointer;
 }
-.inner_product_wrapper{
-    background-color: rgb(243, 245, 249);
-    width: 500px;
-    height: auto;
+.left_right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.portal_img img {
+  width: 280px;
 }

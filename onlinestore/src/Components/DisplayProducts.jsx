@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { ProductsContext } from "../App";
 
 function DisplayProducts() {
-  const { products, filtered_items, isFiltering, handle_cart_add, handle_cart_remove } =
+  const { products, filtered_items, isFiltering, handle_cart_add, handle_cart_remove, handle_portal } =
     useContext(ProductsContext);
   const products_to_display = isFiltering ? filtered_items : products;
 
@@ -13,6 +13,10 @@ function DisplayProducts() {
 
   const handleCartRemove= (id)=>{
     handle_cart_remove(id)
+  }
+
+  const handlePortal = (id)=>{
+    handle_portal(id)
   }
   useEffect(() => {}, [isFiltering]);
   return (

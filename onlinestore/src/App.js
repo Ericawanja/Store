@@ -4,23 +4,34 @@ import Header from "./Components/Header";
 import Portal from "./Components/Portal";
 import Product from "./Components/Product";
 import "./Components/styles.css";
-import './App.css'
+import "./App.css";
 
 export const ProductsContext = createContext();
 function App() {
   const handleSearch = (search_name) => {
-    //console.log(search_name);
     dispatch({ type: "search", s_value: search_name });
   };
   const filterByCategory = (category) => {
     dispatch({ type: "category_filter", category: category });
   };
+
+  // add item
   const handle_cart_add = (id) => {
     dispatch({ type: "add", id: id });
   };
+
+  //remove item
   const handle_cart_remove = (id) => {
     dispatch({ type: "remove", id: id });
   };
+
+  //open portal
+  const handle_portal = (id) => {
+    dispatch({ type: "portal", id: id });
+  };
+  const close_portal = ()=>{
+    dispatch({type:'close portal'})
+  }
 
   let initialState = {
     products: [],
@@ -28,11 +39,13 @@ function App() {
     cart_items: [],
     isFiltering: false,
     cart_size: 0,
-    isPortalOpen:false,
+    isPortalOpen: false,
+    portalProduct:[],
     handleSearch: handleSearch,
     filterByCategory: filterByCategory,
     handle_cart_add: handle_cart_add,
     handle_cart_remove: handle_cart_remove,
+    handle_portal: handle_portal,
   };
   const [state, dispatch] = useReducer(productsReducer, initialState);
 
@@ -50,7 +63,7 @@ function App() {
       <ProductsContext.Provider value={state}>
         <Header />
         <DisplayProducts />
-      {state.isPortalOpen ? <Product/> : ''}
+        {state.isPortalOpen ? <Product /> : ""}
       </ProductsContext.Provider>
     </div>
   );
@@ -98,10 +111,10 @@ function productsReducer(state, action) {
         products: products_quantity,
         cart_size: state.cart_size + 1,
       };
-    case 'remove':
+    case "remove":
       const new_products_quantity = state.products.map((p) => {
         if (p.id === action.id) {
-          p.quantity =  p.quantity - 1 
+          p.quantity = p.quantity - 1;
         }
 
         return p;
@@ -109,8 +122,13 @@ function productsReducer(state, action) {
       return {
         ...state,
         products: new_products_quantity,
-        cart_size: state.cart_size -1,
+        cart_size: state.cart_size - 1,
       };
+      case 'portal':
+        const portal_product = state.products.filter(
+          (p) => p.id === action.id
+        );
+        return{...state, isPortalOpen:true, portalProduct:portal_product}
     default:
       return state;
   }
