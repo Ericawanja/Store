@@ -1,15 +1,21 @@
 import React, { useContext } from "react";
+import { useEffect } from "react";
 import { ProductsContext } from "../App";
 
 function DisplayProducts() {
-  const {products} = useContext(ProductsContext);
+  const { products, filtered_items, isFiltering } = useContext(ProductsContext);
+  const products_to_display = isFiltering ? filtered_items : products;
+//   console.log(filtered_items);
+//   console.log(products_to_display);
+  useEffect(()=>{
 
+  }, [isFiltering])
   return (
     <div>
       <div className="productsWrapper">
-        {products.length === 0 
+        {products_to_display.length === 0
           ? "loading"
-          : products.map((p) => {
+          : products_to_display.map((p) => {
               let { id, title, price, category, description, image } = p;
               return (
                 <div className="product" key={id}>
