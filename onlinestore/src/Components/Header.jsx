@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 function Header() {
   let inputId = useRef();
-  const { handleSearch, products, filterByCategory, cart_size } =
+  const { handleSearch, products, filterByCategory, cart_size, reset } =
     useContext(ProductsContext);
   let [search, setSearch] = useState("");
   const handleSearchInput = (event) => {
@@ -20,10 +20,6 @@ function Header() {
       return inputId.current.focus();
     }
     handleSearch(search);
-  };
-
-  const filterCategories = (p) => {
-    filterByCategory(p);
   };
 
   let arr_categories = [];
@@ -38,9 +34,14 @@ function Header() {
     <div className="header">
       <div className="menu">
         <div className="icons_home_category">
-          <IconContext.Provider value={{ size: "30px", color: "black" }}>
-            <AiOutlineHome />
-          </IconContext.Provider>
+          <span  onClick={reset}>
+            <IconContext.Provider
+              value={{ size: "30px", color: "black" }}
+             
+            >
+              <AiOutlineHome />
+            </IconContext.Provider>
+          </span>
           <div className="categoriesWrapper">
             <span className="icon_category">
               Category{" "}
@@ -51,7 +52,7 @@ function Header() {
             <div className="categories">
               {categories.map((p, index) => {
                 return (
-                  <span key={index} onClick={() => filterCategories(p)}>
+                  <span key={index} onClick={() => filterByCategory(p)}>
                     {p}
                   </span>
                 );

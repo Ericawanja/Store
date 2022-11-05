@@ -44,7 +44,7 @@ function Product() {
           </div>
         </div>
 
-        <div className="portal_desc">$ {description}</div>
+        <div className="portal_desc"> {description}</div>
       </div>
     </div>
     //  </Portal>

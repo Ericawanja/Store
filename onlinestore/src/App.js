@@ -29,9 +29,15 @@ function App() {
   const handle_portal = (id) => {
     dispatch({ type: "portal", id: id });
   };
-  const close_portal = ()=>{
-    dispatch({type:'close portal'})
-  }
+  //close portal
+  const close_portal = () => {
+    dispatch({ type: "close portal" });
+  };
+  //home reset
+  const reset = () => {
+    
+    dispatch({ type: "reset" });
+  };
 
   let initialState = {
     products: [],
@@ -40,12 +46,14 @@ function App() {
     isFiltering: false,
     cart_size: 0,
     isPortalOpen: false,
-    portalProduct:[],
+    portalProduct: [],
+    reset:reset,
     handleSearch: handleSearch,
     filterByCategory: filterByCategory,
     handle_cart_add: handle_cart_add,
     handle_cart_remove: handle_cart_remove,
     handle_portal: handle_portal,
+    close_portal: close_portal,
   };
   const [state, dispatch] = useReducer(productsReducer, initialState);
 
@@ -124,11 +132,21 @@ function productsReducer(state, action) {
         products: new_products_quantity,
         cart_size: state.cart_size - 1,
       };
-      case 'portal':
-        const portal_product = state.products.filter(
-          (p) => p.id === action.id
-        );
-        return{...state, isPortalOpen:true, portalProduct:portal_product}
+    case "portal":
+      const portal_product = state.products.filter((p) => p.id === action.id);
+      return { ...state, isPortalOpen: true, portalProduct: portal_product };
+    case "close portal":
+      return { ...state, isPortalOpen: false };
+    case "reset":
+      console.log('resetting');
+      return {
+        ...state,
+        filtered_items: [],
+        isFiltering: false,
+        isPortalOpen: false,
+        portalProduct: [],
+      };
+
     default:
       return state;
   }

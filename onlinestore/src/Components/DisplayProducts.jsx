@@ -28,8 +28,8 @@ function DisplayProducts() {
               let { id, title, price, category, description, image, quantity } =
                 p;
               return (
-                <div className="product" key={id} onClick ={()=>handlePortal(id)}>
-                  <div className="product_details">
+                <div className="product" key={id} >
+                  <div className="product_details" onClick ={()=>handlePortal(id)}>
                     <div className="product_img">
                       <img src={image} alt="product" />
                     </div>
