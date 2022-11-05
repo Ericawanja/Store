@@ -3,22 +3,28 @@ import { useEffect } from "react";
 import { ProductsContext } from "../App";
 
 function DisplayProducts() {
-  const { products, filtered_items, isFiltering } = useContext(ProductsContext);
+  const { products, filtered_items, isFiltering, handle_cart_add, handle_cart_remove } =
+    useContext(ProductsContext);
   const products_to_display = isFiltering ? filtered_items : products;
-//   console.log(filtered_items);
-//   console.log(products_to_display);
-  useEffect(()=>{
 
-  }, [isFiltering])
+  const handleCartAdd = (id) => {
+    handle_cart_add(id);
+  };
+
+  const handleCartRemove= (id)=>{
+    handle_cart_remove(id)
+  }
+  useEffect(() => {}, [isFiltering]);
   return (
     <div>
       <div className="productsWrapper">
         {products_to_display.length === 0
           ? "loading"
           : products_to_display.map((p) => {
-              let { id, title, price, category, description, image } = p;
+              let { id, title, price, category, description, image, quantity } =
+                p;
               return (
-                <div className="product" key={id}>
+                <div className="product" key={id} onClick ={()=>handlePortal(id)}>
                   <div className="product_details">
                     <div className="product_img">
                       <img src={image} alt="product" />
@@ -28,7 +34,17 @@ function DisplayProducts() {
                   </div>
 
                   <div className="add_to_cart">
-                    <button>Add to cart</button>
+                    {quantity ? (
+                      <div className="addIcons">
+                        <button onClick={() => handleCartAdd(id)}>+</button>
+                        {quantity}
+                        <button onClick={() => handleCartRemove(id)}>-</button>
+                      </div>
+                    ) : (
+                      <button onClick={() => handleCartAdd(id)}>
+                        Add to cart
+                      </button>
+                    )}
                   </div>
                 </div>
               );

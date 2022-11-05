@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from "react";
-import { AiOutlineMenuUnfold } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineShoppingCart } from "react-icons/ai";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IconContext } from "react-icons";
 
@@ -8,7 +8,8 @@ import { useEffect } from "react";
 
 function Header() {
   let inputId = useRef();
-  const { handleSearch, products, filterByCategory } = useContext(ProductsContext);
+  const { handleSearch, products, filterByCategory, cart_size } =
+    useContext(ProductsContext);
   let [search, setSearch] = useState("");
   const handleSearchInput = (event) => {
     setSearch(event.target.value);
@@ -21,9 +22,9 @@ function Header() {
     handleSearch(search);
   };
 
-  const filterCategories= (p)=>{
-    filterByCategory(p)
-  }
+  const filterCategories = (p) => {
+    filterByCategory(p);
+  };
 
   let arr_categories = [];
   products.map((p) => {
@@ -35,28 +36,31 @@ function Header() {
 
   return (
     <div className="header">
-      <div>
-        <div className="menu">
-          <div className="icons_home_category">
-            <IconContext.Provider value={{ size: "30px", color: "black" }}>
-              <AiOutlineMenuUnfold />
-            </IconContext.Provider>
-            <div className="categoriesWrapper">
-              <span className="icon_category">
-                Category{" "}
-                <IconContext.Provider value={{ size: "30px", color: "black" }}>
-                  <IoMdArrowDropdown />
-                </IconContext.Provider>{" "}
-              </span>
-              <div className="categories">
-                {categories.map((p, index) => {
-                  return <span key={index} onClick={()=>filterCategories(p)}>{p}</span>;
-                })}
-              </div>
+      <div className="menu">
+        <div className="icons_home_category">
+          <IconContext.Provider value={{ size: "30px", color: "black" }}>
+            <AiOutlineHome />
+          </IconContext.Provider>
+          <div className="categoriesWrapper">
+            <span className="icon_category">
+              Category{" "}
+              <IconContext.Provider value={{ size: "30px", color: "black" }}>
+                <IoMdArrowDropdown />
+              </IconContext.Provider>{" "}
+            </span>
+            <div className="categories">
+              {categories.map((p, index) => {
+                return (
+                  <span key={index} onClick={() => filterCategories(p)}>
+                    {p}
+                  </span>
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
+
       <div className="search">
         <input
           ref={inputId}
@@ -67,6 +71,12 @@ function Header() {
           placeholder="Search products, categories"
         />
         <button onClick={() => handleSearchSubmit()}>Search</button>
+      </div>
+      <div className="cart">
+        <IconContext.Provider value={{ size: "30px", color: "black" }}>
+          <AiOutlineShoppingCart />
+        </IconContext.Provider>
+        <span className="cart_items">{cart_size}</span>
       </div>
     </div>
   );
