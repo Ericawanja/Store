@@ -130,11 +130,10 @@
   background-color: rgb(237, 232, 232);
 }
 
-.cart_more_icons{
+.cart_more_icons {
   display: flex;
   justify-content: space-between;
   gap: 45px;
-
 }
 .cart {
   position: relative;
@@ -149,7 +148,7 @@
   top: -8px;
   right: 0.2px;
 }
-.more_icons{
+.more_icons {
   cursor: pointer;
 }
 
@@ -158,24 +157,24 @@
   width: 100%;
   background-color: rgba(15, 15, 15, 0.8);
   position: absolute;
- 
+
   display: flex;
   align-items: center;
   flex-direction: column;
-top: 0;
-justify-content: center;
+  top: 0;
+  justify-content: center;
 }
 .inner_product_wrapper {
   background-color: rgb(243, 245, 249);
   width: 500px;
   position: relative;
 }
-.close_portal_icon{
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 10px;
-    cursor: pointer;
+.close_portal_icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 10px;
+  cursor: pointer;
 }
 .left_right {
   display: flex;
@@ -187,20 +186,65 @@ justify-content: center;
 .portal_img img {
   width: 280px;
 }
-.portal_product_details{
-    padding: 0 0 0 20px ;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
+.portal_product_details {
+  padding: 0 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+.portal_price {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.portal_desc {
+  padding: 20px;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+/*******************************************************/
+
+.tableProducts {
+  display: flex;
+  justify-content: center;
+}
+.table_wrapper{
+  margin-top: 20px;
+  background-color: rgb(252, 251, 250);
+  width: 90%;
+}
+table {
+  
+  text-transform: capitalize;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-top: 20px;
+  border-radius: 10px;
+  padding: 20px;
+  border-collapse: collapse;
+}
+th {
+  text-align: left;
+}
+tr{
+  background-color: rgb(243, 241, 239);
 
 }
-.portal_price{
-    font-size: 1.3rem;
-    font-weight: 600;
+
+th,
+td {
+  padding: 10px;
+ 
+  cursor: pointer;
 }
-.portal_desc{
-    padding: 20px;
-    font-size: 0.9rem;
-    text-transform: capitalize;
+td {
+  border-bottom: 1px solid #ddd;
+}
+tr:hover {
+  background-color: rgb(198, 196, 195);
+}
+
+select{
+  padding: 10px;
+  font-size:1.2rem;
 }
