@@ -7,18 +7,10 @@ function DisplayProducts() {
     useContext(ProductsContext);
   const products_to_display = isFiltering ? filtered_items : products;
 
-  const handleCartAdd = (id) => {
-    handle_cart_add(id);
-  };
+  
 
-  const handleCartRemove= (id)=>{
-    handle_cart_remove(id)
-  }
-
-  const handlePortal = (id)=>{
-    handle_portal(id)
-  }
-  useEffect(() => {}, [isFiltering]);
+  
+  // useEffect(() => {}, [isFiltering]);
   return (
     <div>
       <div className="productsWrapper">
@@ -29,7 +21,7 @@ function DisplayProducts() {
                 p;
               return (
                 <div className="product" key={id} >
-                  <div className="product_details" onClick ={()=>handlePortal(id)}>
+                  <div className="product_details" onClick ={()=> handle_portal(id)}>
                     <div className="product_img">
                       <img src={image} alt="product" />
                     </div>
@@ -40,12 +32,12 @@ function DisplayProducts() {
                   <div className="add_to_cart">
                     {quantity ? (
                       <div className="addIcons">
-                        <button onClick={() => handleCartAdd(id)}>+</button>
+                        <button onClick={() =>   handle_cart_add(id)}>+</button>
                         {quantity}
-                        <button onClick={() => handleCartRemove(id)}>-</button>
+                        <button onClick={() =>  handle_cart_remove(id)}>-</button>
                       </div>
                     ) : (
-                      <button onClick={() => handleCartAdd(id)}>
+                      <button onClick={() => handle_cart_add(id)}>
                         Add to cart
                       </button>
                     )}

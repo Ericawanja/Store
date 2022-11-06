@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { IconContext } from "react-icons";
 import { AiOutlineClose } from "react-icons/ai";
 import { ProductsContext } from "../App";
@@ -8,11 +10,28 @@ import "./styles.css";
 function Product() {
   const { portalProduct, handle_cart_add, handle_cart_remove, handle_portal, close_portal } =
     useContext(ProductsContext);
-  console.log(portalProduct);
-  const { id, title, price, description, category, image, rating, quantity } =
-    portalProduct[0];
+  // console.log(portalProduct);
+  const { id } =    portalProduct[0];
+  const [product, setProduct] = useState({})
+  useEffect(()=>{
+    const fetchDataProduct = async () => {
+      const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+      const data = await res.json();
+      setProduct(data)
+      console.log(data);
+
+     
+    };
+    fetchDataProduct();
+
+  }, [id])
+
+  const {  title, price, description, category, image, rating, quantity } =    product
+
   return (
     // <Portal>
+    <>
+    {product.title ?
     <div className="product_details_portal">
       <div className="inner_product_wrapper">
         <span className="close_portal_icon" onClick={()=> close_portal()}>
@@ -47,7 +66,9 @@ function Product() {
         <div className="portal_desc"> {description}</div>
       </div>
     </div>
-    //  </Portal>
+            : 'loading'  }
+   
+    </>
   );
 }
 
