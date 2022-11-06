@@ -1,4 +1,5 @@
 import React, { useEffect, createContext, useReducer } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DisplayProducts from "./Components/DisplayProducts";
 import Header from "./Components/Header";
 import Portal from "./Components/Portal";
@@ -35,7 +36,6 @@ function App() {
   };
   //home reset
   const reset = () => {
-    
     dispatch({ type: "reset" });
   };
 
@@ -47,7 +47,7 @@ function App() {
     cart_size: 0,
     isPortalOpen: false,
     portalProduct: [],
-    reset:reset,
+    reset: reset,
     handleSearch: handleSearch,
     filterByCategory: filterByCategory,
     handle_cart_add: handle_cart_add,
@@ -67,13 +67,18 @@ function App() {
     fetchData();
   }, []);
   return (
-    <div className="App">
-      <ProductsContext.Provider value={state}>
-        <Header />
-        <DisplayProducts />
-        {state.isPortalOpen ? <Product /> : ""}
-      </ProductsContext.Provider>
-    </div>
+    <>
+      <BrowserRouter>
+        <div className="App">
+          <ProductsContext.Provider value={state}>
+            <Header />
+
+           
+            {state.isPortalOpen ? <Product /> : ""}
+          </ProductsContext.Provider>
+        </div>
+      </BrowserRouter>
+    </>
   );
 }
 
@@ -138,7 +143,7 @@ function productsReducer(state, action) {
     case "close portal":
       return { ...state, isPortalOpen: false };
     case "reset":
-      console.log('resetting');
+      console.log("resetting");
       return {
         ...state,
         filtered_items: [],

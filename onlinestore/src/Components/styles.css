@@ -67,7 +67,7 @@
 
 .header {
   display: flex;
-  padding: 30px 50px 10px;
+  padding: 30px 10px 10px 50px;
   justify-content: space-between;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
@@ -129,8 +129,16 @@
 .categories span:hover {
   background-color: rgb(237, 232, 232);
 }
+
+.cart_more_icons{
+  display: flex;
+  justify-content: space-between;
+  gap: 45px;
+
+}
 .cart {
   position: relative;
+  cursor: pointer;
 }
 .cart_items {
   background-color: rgb(209, 87, 1);
@@ -140,6 +148,9 @@
   position: absolute;
   top: -8px;
   right: 0.2px;
+}
+.more_icons{
+  cursor: pointer;
 }
 
 .product_details_portal {
