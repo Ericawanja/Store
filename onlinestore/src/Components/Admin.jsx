@@ -1,35 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 
 function Admin() {
-  const [products, setProducts] = useState();
-  const [dataType, setDataType] = useState("all");
+ 
   let [categories, setCategories] = useState();
+
+  const initialState = {
+    products: [],
+    filtered:[],
+    isFiltering:false,
+    
+    categories: "",
+  };
+
+  const [state, dispatch] = useReducer(adminReducer, initialState);
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch("https://fakestoreapi.com/products");
       const data = await res.json();
-      setProducts(data);
+     
       let arr_categories = [];
-      data.
-        map((p) => {
-          arr_categories.push(p.category);
-        });
+      data.map((p) => {
+        arr_categories.push(p.category);
+      });
       let category_set = new Set(arr_categories);
       setCategories(Array.from(category_set));
+      dispatch({ type: "all", data: data });
     };
     fetchData();
-  }, [dataType]);
- 
+  }, []);
+
+  const handleSelect = (e) => {
+    dispatch({ type: "select", select_value: e.target.value });
+  };
+  
+
   return (
     <div className="tableProducts">
       <div className="table_wrapper">
-        <select>
+        <select onChange={(e) => handleSelect(e)}>
           <option value="all">All Items</option>
-          {categories ? categories.map((c)=>{
-            return  <option value="all">{c}</option>
-          }):''}
+          {categories
+            ? categories.map((c) => {
+                return <option value={c}>{c}</option>;
+              })
+            : ""}
         </select>
-        {products ? (
+        {state.filtered.length > 0 ? (
           <table>
             <thead>
               <tr>
@@ -40,7 +56,7 @@ function Admin() {
               </tr>
             </thead>
             <tbody>
-              {products.map((p) => {
+              {state.filtered.map((p) => {
                 let { id, title, price, category, quantity } = p;
                 return (
                   <tr key={id}>
@@ -62,3 +78,15 @@ function Admin() {
 }
 
 export default Admin;
+
+function adminReducer(state, action) {
+  switch (action.type) {
+    case "all":
+      return { ...state, products: action.data, filtered:action.data };
+    case "select":
+        if(action.select_value === 'all') return { ...state,  filtered:state.products };
+        let selectedP = state.products.filter((p)=>p.category.toLowerCase() === action.select_value.toLowerCase())
+        console.log(selectedP);
+        return{...state, filtered:selectedP}
+  }
+}
