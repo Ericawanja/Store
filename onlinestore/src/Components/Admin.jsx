@@ -7,6 +7,7 @@ import { BiEditAlt } from "react-icons/bi";
 
 function Admin() {
   let [table_icons, setTable_icons] = useState(false);
+  let [isediting, setIsEditing] = useState(false);
   let [adminportal_open, setadminPortal_open] = useState(false);
   let [portal_id, set_portal_id] = useState();
   let [form_open, setForm_open] = useState(false);
@@ -85,26 +86,54 @@ function Admin() {
 
   const handleInput = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormDetails({ ...formDetails, [name]: value });
   };
 
   const handle_form_submit = async () => {
-    const send = await fetch("https://fakestoreapi.com/products", {
-      method: "POST",
-      body: JSON.stringify({
-        title: "test product",
-        price: 13.5,
-        description: "lorem ipsum set",
-        image: "https://i.pravatar.cc",
-        category: "electronic",
-      }),
-    });
-    const res = await send.json();
-    console.log(res);
+    if (isediting) {
+      const edit_p = await fetch("https://fakestoreapi.com/products/7", {
+        method: "PUT",
+        body: JSON.stringify({
+          title: "test product",
+          price: 13.5,
+          description: "lorem ipsum set",
+          image: "https://i.pravatar.cc",
+          category: "electronic",
+        }),
+      });
+      const res = await edit_p.json()
+      console.log(res);
+    } else {
+      const send = await fetch("https://fakestoreapi.com/products", {
+        method: "POST",
+        body: JSON.stringify({
+          title: "test product",
+          price: 13.5,
+          description: "lorem ipsum set",
+          image: "https://i.pravatar.cc",
+          category: "electronic",
+        }),
+      });
+      const res = await send.json();
+      console.log(res);
+    }
+    setForm_open(false);
   };
 
   const handleEdit = (id) => {
-    const 
+    const product = state.products.filter((p) => p.id === id);
+
+    setFormDetails({
+      ...formDetails,
+      title: product[0].title,
+      price: product[0].price,
+      category: product[0].category,
+      desc: product[0].description,
+      image: product[0].image,
+    });
+    setForm_open(true);
+    setIsEditing(true);
   };
 
   const handleDelete = async (id) => {
@@ -112,7 +141,7 @@ function Admin() {
     const del = await fetch(`https://fakestoreapi.com/products/${id}`, {
       method: "DELETE",
     });
-    const res= await del.json()
+    const res = await del.json();
     console.log(res);
   };
   return (
