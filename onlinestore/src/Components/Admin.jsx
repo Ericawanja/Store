@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useReducer } from "react";
 import AdminProductPortal from "./AdminProductPortal";
+import { IconContext } from "react-icons";
+import { AiOutlineClose } from "react-icons/ai";
 
 function Admin() {
-  let [adminportal_open, setadminPortal_open] = useState(false)
-  let [portal_id, set_portal_id] = useState()
+  let [adminportal_open, setadminPortal_open] = useState(false);
+  let [portal_id, set_portal_id] = useState();
+  let [form_open, setForm_open] = useState(false);
 
   const initialState = {
     products: [],
@@ -27,10 +30,9 @@ function Admin() {
         "https://fakestoreapi.com/products/categories"
       );
       const categories_data = await resCategories.json();
-      let payload= {data, categories_data}
+      let payload = { data, categories_data };
 
-     
-      dispatch({ type: "all", payload:payload });
+      dispatch({ type: "all", payload: payload });
     };
     fetchData();
   }, []);
@@ -51,19 +53,25 @@ function Admin() {
   //limit data
   const handle_limit_input = async (e) => {
     let _limit = +e.target.value;
-    let res = await fetch(`https://fakestoreapi.com/products?limit=${_limit}||`);
+    let res = await fetch(
+      `https://fakestoreapi.com/products?limit=${_limit}||`
+    );
     let data = await res.json();
     dispatch({ type: "sort_or_limit", data: data });
   };
 
   //handle portal
 
-  const handle_portal = (p_id)=>{
-    set_portal_id(p_id)
-    setadminPortal_open(true)
+  const handle_portal = (p_id) => {
+    set_portal_id(p_id);
+    setadminPortal_open(true);
+  };
 
-  }
+  //add form
 
+  const handle_add_form = () => {
+    setForm_open(true);
+  };
   return (
     <>
       <div className="tableProducts">
@@ -88,11 +96,14 @@ function Admin() {
               <input
                 type="number"
                 placeholder={`Enter limit betwwen 1 and ${state.filtered.length}`}
-               
                 onChange={handle_limit_input}
                 min="1"
                 max={state.products.length}
               />
+
+              <span className="add" onClick={handle_add_form}>
+                +{" "}
+              </span>
             </span>
           </div>
           {state.filtered.length > 0 ? (
@@ -102,14 +113,14 @@ function Admin() {
                   <th>Category</th>
                   <th>Product name</th>
                   <th>Price</th>
-                  <th>Delete</th>
+                  <th className="edit_icon">Delete</th>
                 </tr>
               </thead>
               <tbody>
                 {state.filtered.map((p) => {
                   let { id, title, price, category, quantity } = p;
                   return (
-                    <tr key={id} onClick={()=>handle_portal(id)}>
+                    <tr key={id} onClick={() => handle_portal(id)}>
                       <td>{category}</td>
                       <td>{title}</td>
                       <td>{price}</td>
@@ -124,7 +135,41 @@ function Admin() {
           )}
         </div>
       </div>
-     {adminportal_open && <AdminProductPortal id={portal_id} setadminPortal_open= {setadminPortal_open}/>}
+      {adminportal_open && (
+        <AdminProductPortal
+          id={portal_id}
+          setadminPortal_open={setadminPortal_open}
+        />
+      )}
+      { form_open && <div className="form_container">
+        <div>
+          <span
+            className="close_ad_portal_icon"
+            onClick={() => setForm_open(false)}
+          >
+            <IconContext.Provider value={{ size: "30px", color: "white" }}>
+              <AiOutlineClose />
+            </IconContext.Provider>
+          </span>
+
+          <label htmlFor="title">Enter Title</label>
+          <input type="text" name="title" />
+
+          <label htmlFor="category">Enter Category</label>
+          <input type="text" name="category" />
+
+          <label htmlFor="price">Enter Price</label>
+          <input type="nummber" name="price" />
+
+          <label htmlFor="description">Enter Description</label>
+          <textarea type="text" name="desc" rows="10" cols="25" />
+
+          <span className="add_btns">
+            <button className="cancel">save</button>
+            <button className="save">Save</button>
+          </span>
+        </div>
+      </div>}
     </>
   );
 }
@@ -134,7 +179,12 @@ export default Admin;
 function adminReducer(state, action) {
   switch (action.type) {
     case "all":
-      return { ...state, products: action.payload.data, filtered: action.payload.data, categories:action.payload.categories_data };
+      return {
+        ...state,
+        products: action.payload.data,
+        filtered: action.payload.data,
+        categories: action.payload.categories_data,
+      };
     case "select":
       if (action.select_value === "all")
         return { ...state, filtered: state.products };

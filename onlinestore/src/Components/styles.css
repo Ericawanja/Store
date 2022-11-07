@@ -210,13 +210,12 @@
   justify-content: center;
   position: relative;
 }
-.table_wrapper{
+.table_wrapper {
   margin-top: 20px;
   background-color: rgb(252, 251, 250);
   width: 90%;
 }
 table {
-  
   text-transform: capitalize;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   margin-top: 20px;
@@ -228,15 +227,14 @@ table {
 th {
   text-align: left;
 }
-tr{
+tr {
   background-color: rgb(243, 241, 239);
-
 }
 
 th,
 td {
   padding: 10px;
- 
+
   cursor: pointer;
 }
 td {
@@ -246,80 +244,133 @@ tr:hover {
   background-color: rgb(198, 196, 195);
 }
 
-select{
+select {
   padding: 10px;
-  font-size:1.2rem;
+  font-size: 1.2rem;
 }
-option{
+option {
   text-transform: capitalize;
   padding-top: 10px;
 }
-.table_controls{
+.table_controls {
   display: flex;
   justify-content: space-between;
   margin-right: 30px;
-  
-  width: 90%;
+
+  width: 100%;
 }
-.sort_limit{
+.sort_limit {
   display: flex;
-  justify-content: space-between;
-
+  justify-content: flex-end;
+  gap: 5px;
+  align-items: center;
+  cursor: pointer;
 }
-
-.sort_limit input{
-  padding: 1px;
-  gap: 1px;
+.sort_limit select {
+  outline: none;
+  border: none;
+}
+.sort_limit input {
+  padding: 10px;
+  outline: none;
+  border: none;
+  background-color: aliceblue;
+}
+.sort_limit .add {
+  background-color: rgb(209, 87, 1);
+  border-radius: 100%;
+  padding: 5px;
+  text-align: end;
+}
+.add:hover {
+  transform: scale(2);
 }
 /******************************ADMIN*/
-.admin_portal_wrapper{
+.admin_portal_wrapper {
   width: 100%;
   height: 100%;
-  background: rgba(162, 161, 161,.5);
+  background: rgba(162, 161, 161, 0.5);
   position: absolute;
   top: 50%;
   left: 50%;
   bottom: 50%;
   transform: translate(-50%, -50%);
 }
-  
-.admin_portal{
-  background-color: rgb(255,255,255);
+
+.admin_portal {
+  background-color: rgb(255, 255, 255);
   width: 80%;
- min-height: 40%;
+  min-height: 40%;
   margin: auto;
   position: fixed;
-  
+
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
-.ad_portal_details{
+.ad_portal_details {
   padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-
 }
- .admin_image img{
+.admin_image img {
   width: 250px;
   height: auto;
 }
-.p_details{
+.p_details {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  
 }
-.p_details .title{
+.p_details .title {
   font-weight: 600;
   font-size: 1.4rem;
 }
-.p_details .desc{
+.p_details .desc {
   font-size: 1.3rem;
 }
-.close_ad_portal_icon{
+.close_ad_portal_icon {
   display: flex;
   justify-content: flex-end;
   padding: 15px;
+  cursor: pointer;
+}
+/***********************Form***********************************/
+.form_container {
+  width: 100%;
+  height: 100%;
+  background: rgba(162, 161, 161, 0.5);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%, -50%);
+}
+.form_container div {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(209, 87, 1);
+  width: 50%;
+  top: 50%;
+  right: ;
+  transform: translate(50%, 50%);
+  padding: 30px;
+}
+.form_container div input,
+textarea {
+  padding: 10px;
+  outline: none;
+  border: none;
+}
+.add_btns {
+  margin-top: 15px;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.add_btns .cancel,
+.save {
+  padding: 16px;
   cursor: pointer;
 }
