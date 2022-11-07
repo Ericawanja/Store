@@ -222,6 +222,7 @@ table {
   border-radius: 10px;
   padding: 20px;
   border-collapse: collapse;
+  width: 100%;
 }
 th {
   text-align: left;
@@ -251,4 +252,21 @@ select{
 option{
   text-transform: capitalize;
   padding-top: 10px;
+}
+.table_controls{
+  display: flex;
+  justify-content: space-between;
+  margin-right: 30px;
+  
+  width: 90%;
+}
+.sort_limit{
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.sort_limit input{
+  padding: 1px;
+  gap: 1px;
 }

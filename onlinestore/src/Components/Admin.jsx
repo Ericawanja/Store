@@ -2,8 +2,7 @@ import React, { useEffect, useState, useReducer } from "react";
 
 function Admin() {
   let [categories, setCategories] = useState();
-  let [isSorting, setIssorting] = useState(false);
-  let [order, setOrder] = useState("asc");
+  let [limit, setLimit] = useState()
 
   const initialState = {
     products: [],
@@ -18,60 +17,67 @@ function Admin() {
   const [state, dispatch] = useReducer(adminReducer, initialState);
   useEffect(() => {
     const fetchData = async () => {
+      //all data initially
       const res = await fetch("https://fakestoreapi.com/products");
       const data = await res.json();
 
-      let arr_categories = [];
-      data.map((p) => {
-        arr_categories.push(p.category);
-      });
-      let category_set = new Set(arr_categories);
-      setCategories(Array.from(category_set));
+
+      //fetch categories
+      const resCategories = await fetch('https://fakestoreapi.com/products/categories')
+      const categories_data = await resCategories.json();
+
+      setCategories(categories_data);
       dispatch({ type: "all", data: data });
     };
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchParticularData = async () => {
-      if (isSorting) {
-        let res = await fetch(
-          `https://fakestoreapi.com/products?sort=${order}`
-        );
-        let data = await res.json();
-        console.log(data);
-        dispatch({ type: "all", data: data });
-      }
-    };
-    fetchParticularData();
-  }, [isSorting]);
-
+  
+//handle sort
   const handleSort = async (e) => {
     let order = e.target.value;
     let res = await fetch(`https://fakestoreapi.com/products?sort=${order}`);
     let data = await res.json();
-    dispatch({ type: "sorting", data: data });
+    dispatch({ type: "sort_or_limit", data: data });
   };
 
+  //select category
   const handleSelect = (e) => {
     dispatch({ type: "select", select_value: e.target.value });
   };
 
+  //limit data 
+  const handle_limit_input = async (e)=>{
+    let limit = +e.target.value
+    let res = await fetch(`https://fakestoreapi.com/products?limit=${limit}`);
+    let data = await res.json();
+    dispatch({ type: "sort_or_limit", data: data });
+    
+  }
+
   return (
     <div className="tableProducts">
       <div className="table_wrapper">
-        <select onChange={(e) => handleSelect(e)}>
-          <option value="all">All Items</option>
-          {categories
-            ? categories.map((c) => {
-                return <option value={c}>{c}</option>;
-              })
-            : ""}
-        </select>
-        <select onChange={handleSort}>
-          <option value="desc">Desceding</option>
-          <option value="asc">Ascending</option>
-        </select>
+        <div className="table_controls">
+          <span className="select_span">
+            <select onChange={(e) => handleSelect(e)}>
+              <option value="all">All Items</option>
+              {categories
+                ? categories.map((c) => {
+                    return <option value={c}>{c}</option>;
+                  })
+                : ""}
+            </select>
+          </span>
+          <span className="sort_limit">
+            <select onChange={handleSort}>
+              <option value="desc">Desceding</option>
+              <option value="asc">Ascending</option>
+            </select>
+
+            <input type="number" placeholder={`Enter limit betwwen 1 and ${state.filtered.length}`} value={limit} onChange={handle_limit_input}  min= '1' max={state.products.length}/>
+          </span>
+        </div>
         {state.filtered.length > 0 ? (
           <table>
             <thead>
@@ -118,8 +124,8 @@ function adminReducer(state, action) {
       );
 
       return { ...state, filtered: selectedP };
-    case 'sorting':
+    case "sort_or_limit":
       //console.log(action.data);
-      return {...state, filtered:action.data}  
+      return { ...state, filtered: action.data };
   }
 }
