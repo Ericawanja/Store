@@ -1,12 +1,22 @@
 import React, { useEffect, useState, useReducer } from "react";
 import AdminProductPortal from "./AdminProductPortal";
 import { IconContext } from "react-icons";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMore } from "react-icons/ai";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+import { BiEditAlt } from "react-icons/bi";
 
 function Admin() {
+  let [table_icons, setTable_icons] = useState(false);
   let [adminportal_open, setadminPortal_open] = useState(false);
   let [portal_id, set_portal_id] = useState();
   let [form_open, setForm_open] = useState(false);
+  let [formDetails, setFormDetails] = useState({
+    title: "",
+    desc: "",
+    price: "",
+    category: "",
+    image: "",
+  });
 
   const initialState = {
     products: [],
@@ -72,6 +82,39 @@ function Admin() {
   const handle_add_form = () => {
     setForm_open(true);
   };
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setFormDetails({ ...formDetails, [name]: value });
+  };
+
+  const handle_form_submit = async () => {
+    const send = await fetch("https://fakestoreapi.com/products", {
+      method: "POST",
+      body: JSON.stringify({
+        title: "test product",
+        price: 13.5,
+        description: "lorem ipsum set",
+        image: "https://i.pravatar.cc",
+        category: "electronic",
+      }),
+    });
+    const res = await send.json();
+    console.log(res);
+  };
+
+  const handleEdit = (id) => {
+    const 
+  };
+
+  const handleDelete = async (id) => {
+    setTable_icons(false);
+    const del = await fetch(`https://fakestoreapi.com/products/${id}`, {
+      method: "DELETE",
+    });
+    const res= await del.json()
+    console.log(res);
+  };
   return (
     <>
       <div className="tableProducts">
@@ -120,11 +163,47 @@ function Admin() {
                 {state.filtered.map((p) => {
                   let { id, title, price, category, quantity } = p;
                   return (
-                    <tr key={id} onClick={() => handle_portal(id)}>
-                      <td>{category}</td>
-                      <td>{title}</td>
-                      <td>{price}</td>
-                      <td>:</td>
+                    <tr key={id}>
+                      <td onClick={() => handle_portal(id)}>{category}</td>
+                      <td onClick={() => handle_portal(id)}>{title}</td>
+                      <td onClick={() => handle_portal(id)}>{price}</td>
+                      <td className="table_edit_icon">
+                        {table_icons ? (
+                          <div className="edit_delete_icons">
+                            <span
+                              className="edit"
+                              onClick={() => handleEdit(id)}
+                            >
+                              <IconContext.Provider
+                                value={{ color: "black", size: "24px" }}
+                              >
+                                <BiEditAlt />
+                              </IconContext.Provider>
+                            </span>
+                            <span
+                              className="delete"
+                              onClick={() => handleDelete(id)}
+                            >
+                              <IconContext.Provider
+                                value={{ color: "black", size: "24px" }}
+                              >
+                                <RiDeleteBin6Fill />
+                              </IconContext.Provider>
+                            </span>
+                          </div>
+                        ) : (
+                          <span
+                            className="table_row_more"
+                            onClick={() => setTable_icons(true)}
+                          >
+                            <IconContext.Provider
+                              value={{ size: "30px", color: "black" }}
+                            >
+                              <AiOutlineMore />
+                            </IconContext.Provider>
+                          </span>
+                        )}
+                      </td>
                     </tr>
                   );
                 })}
@@ -141,35 +220,71 @@ function Admin() {
           setadminPortal_open={setadminPortal_open}
         />
       )}
-      { form_open && <div className="form_container">
-        <div>
-          <span
-            className="close_ad_portal_icon"
-            onClick={() => setForm_open(false)}
-          >
-            <IconContext.Provider value={{ size: "30px", color: "white" }}>
-              <AiOutlineClose />
-            </IconContext.Provider>
-          </span>
+      {form_open && (
+        <div className="form_container">
+          <div>
+            <span
+              className="close_ad_portal_icon"
+              onClick={() => setForm_open(false)}
+            >
+              <IconContext.Provider value={{ size: "30px", color: "white" }}>
+                <AiOutlineClose />
+              </IconContext.Provider>
+            </span>
 
-          <label htmlFor="title">Enter Title</label>
-          <input type="text" name="title" />
+            <label htmlFor="title">Enter Title</label>
+            <input
+              type="text"
+              name="title"
+              onChange={handleInput}
+              value={formDetails.title}
+            />
 
-          <label htmlFor="category">Enter Category</label>
-          <input type="text" name="category" />
+            <label htmlFor="category">Enter Category</label>
+            <input
+              type="text"
+              name="category"
+              onChange={handleInput}
+              value={formDetails.category}
+            />
 
-          <label htmlFor="price">Enter Price</label>
-          <input type="nummber" name="price" />
+            <label htmlFor="price">Enter Price</label>
+            <input
+              type="text"
+              name="price"
+              onChange={handleInput}
+              value={formDetails.price}
+            />
 
-          <label htmlFor="description">Enter Description</label>
-          <textarea type="text" name="desc" rows="10" cols="25" />
+            <label htmlFor="image">Enter Image url</label>
+            <input
+              type="text"
+              name="image"
+              onChange={handleInput}
+              value={formDetails.image}
+            />
 
-          <span className="add_btns">
-            <button className="cancel">save</button>
-            <button className="save">Save</button>
-          </span>
+            <label htmlFor="description">Enter Description</label>
+            <textarea
+              type="text"
+              name="desc"
+              rows="10"
+              cols="25"
+              onChange={handleInput}
+              value={formDetails.desc}
+            />
+
+            <span className="add_btns">
+              <button className="cancel" onClick={() => setForm_open(false)}>
+                Cancel
+              </button>
+              <button className="save" onClick={(e) => handle_form_submit(e)}>
+                Save
+              </button>
+            </span>
+          </div>
         </div>
-      </div>}
+      )}
     </>
   );
 }

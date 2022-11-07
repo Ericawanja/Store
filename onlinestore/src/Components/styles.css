@@ -241,7 +241,10 @@ td {
   border-bottom: 1px solid #ddd;
 }
 tr:hover {
-  background-color: rgb(198, 196, 195);
+  background-color: rgba(243, 241, 239, .5);;
+}
+.table_edit_icon{
+  text-align: end;
 }
 
 select {
@@ -351,10 +354,11 @@ option {
   flex-direction: column;
   background-color: rgb(209, 87, 1);
   width: 50%;
-  top: 50%;
-  right: ;
+  top: 5%;
+
   transform: translate(50%, 50%);
   padding: 30px;
+  z-index: 1000;
 }
 .form_container div input,
 textarea {
