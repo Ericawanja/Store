@@ -2,11 +2,15 @@ import React, { useEffect, useState, useReducer } from "react";
 
 function Admin() {
   let [categories, setCategories] = useState();
+  let [isSorting, setIssorting] = useState(false);
+  let [order, setOrder] = useState("asc");
 
   const initialState = {
     products: [],
     filtered: [],
     isFiltering: false,
+    isSorting: false,
+    sorted: [],
 
     categories: "",
   };
@@ -28,6 +32,27 @@ function Admin() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchParticularData = async () => {
+      if (isSorting) {
+        let res = await fetch(
+          `https://fakestoreapi.com/products?sort=${order}`
+        );
+        let data = await res.json();
+        console.log(data);
+        dispatch({ type: "all", data: data });
+      }
+    };
+    fetchParticularData();
+  }, [isSorting]);
+
+  const handleSort = async (e) => {
+    let order = e.target.value;
+    let res = await fetch(`https://fakestoreapi.com/products?sort=${order}`);
+    let data = await res.json();
+    dispatch({ type: "sorting", data: data });
+  };
+
   const handleSelect = (e) => {
     dispatch({ type: "select", select_value: e.target.value });
   };
@@ -43,9 +68,9 @@ function Admin() {
               })
             : ""}
         </select>
-        <select>
+        <select onChange={handleSort}>
           <option value="desc">Desceding</option>
-          <option value="asce">Ascending</option>
+          <option value="asc">Ascending</option>
         </select>
         {state.filtered.length > 0 ? (
           <table>
@@ -91,7 +116,10 @@ function adminReducer(state, action) {
       let selectedP = state.products.filter(
         (p) => p.category.toLowerCase() === action.select_value.toLowerCase()
       );
-      console.log(selectedP);
+
       return { ...state, filtered: selectedP };
+    case 'sorting':
+      //console.log(action.data);
+      return {...state, filtered:action.data}  
   }
 }
