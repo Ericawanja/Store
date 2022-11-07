@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useReducer } from "react";
 
 function Admin() {
- 
   let [categories, setCategories] = useState();
 
   const initialState = {
     products: [],
-    filtered:[],
-    isFiltering:false,
-    
+    filtered: [],
+    isFiltering: false,
+
     categories: "",
   };
 
@@ -17,7 +16,7 @@ function Admin() {
     const fetchData = async () => {
       const res = await fetch("https://fakestoreapi.com/products");
       const data = await res.json();
-     
+
       let arr_categories = [];
       data.map((p) => {
         arr_categories.push(p.category);
@@ -32,7 +31,6 @@ function Admin() {
   const handleSelect = (e) => {
     dispatch({ type: "select", select_value: e.target.value });
   };
-  
 
   return (
     <div className="tableProducts">
@@ -44,6 +42,10 @@ function Admin() {
                 return <option value={c}>{c}</option>;
               })
             : ""}
+        </select>
+        <select>
+          <option value="desc">Desceding</option>
+          <option value="asce">Ascending</option>
         </select>
         {state.filtered.length > 0 ? (
           <table>
@@ -82,11 +84,14 @@ export default Admin;
 function adminReducer(state, action) {
   switch (action.type) {
     case "all":
-      return { ...state, products: action.data, filtered:action.data };
+      return { ...state, products: action.data, filtered: action.data };
     case "select":
-        if(action.select_value === 'all') return { ...state,  filtered:state.products };
-        let selectedP = state.products.filter((p)=>p.category.toLowerCase() === action.select_value.toLowerCase())
-        console.log(selectedP);
-        return{...state, filtered:selectedP}
+      if (action.select_value === "all")
+        return { ...state, filtered: state.products };
+      let selectedP = state.products.filter(
+        (p) => p.category.toLowerCase() === action.select_value.toLowerCase()
+      );
+      console.log(selectedP);
+      return { ...state, filtered: selectedP };
   }
 }
