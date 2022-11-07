@@ -289,14 +289,18 @@ option{
  min-height: 40%;
   margin: auto;
   position: fixed;
+  
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.ad_portal_details{
   padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
 }
-.admin_portal .admin_image img{
+ .admin_image img{
   width: 250px;
   height: auto;
 }
@@ -312,4 +316,10 @@ option{
 }
 .p_details .desc{
   font-size: 1.3rem;
+}
+.close_ad_portal_icon{
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px;
+  cursor: pointer;
 }

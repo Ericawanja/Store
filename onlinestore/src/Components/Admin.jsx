@@ -124,7 +124,7 @@ function Admin() {
           )}
         </div>
       </div>
-     {adminportal_open && <AdminProductPortal id={portal_id}/>}
+     {adminportal_open && <AdminProductPortal id={portal_id} setadminPortal_open= {setadminPortal_open}/>}
     </>
   );
 }
