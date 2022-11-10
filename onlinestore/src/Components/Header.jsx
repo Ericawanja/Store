@@ -34,8 +34,7 @@ function Header() {
     arr_categories.push(p.category);
   });
   let category_set = new Set(arr_categories);
-  let categories = Array.from(category_set);
- 
+  let categories = Array.from(category_set); 
 
   return (
     <>
