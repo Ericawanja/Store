@@ -4,8 +4,16 @@ import { IconContext } from "react-icons";
 import { AiOutlineClose, AiOutlineMore } from "react-icons/ai";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { BiEditAlt } from "react-icons/bi";
+import Popup from "./Popup";
 
 function Admin() {
+  //popup state
+  const [popup, setPopup] = useState(false);
+  const [popup_details, setPopup_details] = useState({
+    action: "",
+    data: [],
+  });
+
   let [table_icons, setTable_icons] = useState(false);
   let [isediting, setIsEditing] = useState(false);
   let [adminportal_open, setadminPortal_open] = useState(false);
@@ -30,6 +38,7 @@ function Admin() {
   };
 
   const [state, dispatch] = useReducer(adminReducer, initialState);
+
   useEffect(() => {
     const fetchData = async () => {
       //all data initially
@@ -102,8 +111,9 @@ function Admin() {
           category: "electronic",
         }),
       });
-      const res = await edit_p.json()
-      console.log(res);
+      const res = await edit_p.json();
+      setPopup_details({ action: "edit", data: res }); //passes details to the popup
+      setPopup(true); //opens the popup
     } else {
       const send = await fetch("https://fakestoreapi.com/products", {
         method: "POST",
@@ -116,7 +126,8 @@ function Admin() {
         }),
       });
       const res = await send.json();
-      console.log(res);
+      setPopup_details({ action: "add", data: res }); //passes details to the popup
+      setPopup(true); //opens the popup
     }
     setForm_open(false);
   };
@@ -142,7 +153,8 @@ function Admin() {
       method: "DELETE",
     });
     const res = await del.json();
-    console.log(res);
+    setPopup_details({action:'delete', data:res});
+    setPopup(true);
   };
   return (
     <>
@@ -314,6 +326,7 @@ function Admin() {
           </div>
         </div>
       )}
+      {popup && <Popup setPopup= {setPopup} popup_details = {popup_details}/>}
     </>
   );
 }
@@ -339,5 +352,7 @@ function adminReducer(state, action) {
       return { ...state, filtered: selectedP };
     case "sort_or_limit":
       return { ...state, filtered: action.data };
+    default:
+      return state;
   }
 }
