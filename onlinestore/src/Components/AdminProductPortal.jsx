@@ -12,7 +12,7 @@ function AdminProductPortal({ id, setadminPortal_open }) {
       const res = await fetch(`https://fakestoreapi.com/products/${id}`);
       const data = await res.json();
       setProduct(data);
-      console.log(data);
+     
     };
     fetchDataProduct();
   }, [id]);

@@ -93,10 +93,7 @@ function Header() {
           </div>
         </div>
       </div>
-      <Routes>
-        <Route path="/" element={<DisplayProducts />} />
-        <Route exact path="admin" element={<Admin />} />
-      </Routes>
+      
     </>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useEffect } from "react";
 import { ProductsContext } from "../App";
+import Header from "./Header";
 
 function DisplayProducts() {
   const { products, filtered_items, isFiltering, handle_cart_add, handle_cart_remove, handle_portal } =
@@ -13,6 +14,7 @@ function DisplayProducts() {
   // useEffect(() => {}, [isFiltering]);
   return (
     <div>
+      <Header/>
       <div className="productsWrapper">
         {products_to_display.length === 0
           ? "loading"

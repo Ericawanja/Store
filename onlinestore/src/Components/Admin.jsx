@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useState, useReducer, useRef } from "react";
 import AdminProductPortal from "./AdminProductPortal";
 import { IconContext } from "react-icons";
 import { AiOutlineClose, AiOutlineMore } from "react-icons/ai";
@@ -51,6 +51,7 @@ function Admin() {
       );
       const categories_data = await resCategories.json();
       let payload = { data, categories_data };
+      console.log(categories_data);
 
       dispatch({ type: "all", payload: payload });
     };
@@ -66,17 +67,22 @@ function Admin() {
   };
 
   //select category
-  const handleSelect = (e) => {
-    dispatch({ type: "select", select_value: e.target.value });
+  const handleSelect = async (e) => {
+    let category = e.target.value;
+    let res = await fetch(`https://fakestoreapi.com/products/category/${category}`);
+    let data = await res.json();
+
+    dispatch({ type: "select", select_value: e.target.value, data:data });
   };
 
   //limit data
   const handle_limit_input = async (e) => {
     let _limit = +e.target.value;
     let res = await fetch(
-      `https://fakestoreapi.com/products?limit=${_limit}||`
+      `https://fakestoreapi.com/products?limit=${_limit}`
     );
     let data = await res.json();
+    //console.log(data);
     dispatch({ type: "sort_or_limit", data: data });
   };
 
@@ -95,11 +101,26 @@ function Admin() {
 
   const handleInput = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
+   
     setFormDetails({ ...formDetails, [name]: value });
   };
 
+  //useRef for input to focus if field is empty
+  let titleId = useRef();
+  let descId = useRef();
+  let priceId = useRef();
+  let categoryId = useRef();
+  let imageId = useRef();
+
   const handle_form_submit = async () => {
+    //console.log(formDetails);
+    if (formDetails.title === "") return titleId.current.focus();
+
+    if (formDetails.category === "") return categoryId.current.focus();
+    if (formDetails.price === "") return priceId.current.focus();
+    if (formDetails.image === "") return imageId.current.focus();
+    if (formDetails.desc === "") return descId.current.focus();
+
     if (isediting) {
       const edit_p = await fetch("https://fakestoreapi.com/products/7", {
         method: "PUT",
@@ -153,7 +174,7 @@ function Admin() {
       method: "DELETE",
     });
     const res = await del.json();
-    setPopup_details({action:'delete', data:res});
+    setPopup_details({ action: "delete", data: res });
     setPopup(true);
   };
   return (
@@ -179,7 +200,7 @@ function Admin() {
 
               <input
                 type="number"
-                placeholder={`Enter limit betwwen 1 and ${state.filtered.length}`}
+                placeholder='Limit'
                 onChange={handle_limit_input}
                 min="1"
                 max={state.products.length}
@@ -275,6 +296,7 @@ function Admin() {
 
             <label htmlFor="title">Enter Title</label>
             <input
+              ref={titleId}
               type="text"
               name="title"
               onChange={handleInput}
@@ -283,6 +305,7 @@ function Admin() {
 
             <label htmlFor="category">Enter Category</label>
             <input
+              ref={categoryId}
               type="text"
               name="category"
               onChange={handleInput}
@@ -291,6 +314,7 @@ function Admin() {
 
             <label htmlFor="price">Enter Price</label>
             <input
+              ref={priceId}
               type="text"
               name="price"
               onChange={handleInput}
@@ -299,6 +323,7 @@ function Admin() {
 
             <label htmlFor="image">Enter Image url</label>
             <input
+              ref={imageId}
               type="text"
               name="image"
               onChange={handleInput}
@@ -307,6 +332,7 @@ function Admin() {
 
             <label htmlFor="description">Enter Description</label>
             <textarea
+              ref={descId}
               type="text"
               name="desc"
               rows="10"
@@ -326,7 +352,7 @@ function Admin() {
           </div>
         </div>
       )}
-      {popup && <Popup setPopup= {setPopup} popup_details = {popup_details}/>}
+      {popup && <Popup setPopup={setPopup} popup_details={popup_details} />}
     </>
   );
 }
@@ -348,8 +374,8 @@ function adminReducer(state, action) {
       let selectedP = state.products.filter(
         (p) => p.category.toLowerCase() === action.select_value.toLowerCase()
       );
-
-      return { ...state, filtered: selectedP };
+console.log(action);
+      return { ...state, filtered: action.data };
     case "sort_or_limit":
       return { ...state, filtered: action.data };
     default:

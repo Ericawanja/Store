@@ -6,6 +6,7 @@ import Portal from "./Components/Portal";
 import Product from "./Components/Product";
 import "./Components/styles.css";
 import "./App.css";
+import Admin from "./Components/Admin";
 
 export const ProductsContext = createContext();
 function App() {
@@ -71,9 +72,11 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <ProductsContext.Provider value={state}>
-            <Header />
+            <Routes>
+              <Route path="/" element={<DisplayProducts />} />
+              <Route exact path="admin" element={<Admin />} />
+            </Routes>
 
-           
             {state.isPortalOpen ? <Product /> : ""}
           </ProductsContext.Provider>
         </div>
